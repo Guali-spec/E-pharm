@@ -1,0 +1,187 @@
+Notes — Backend : Configuration de base + endpoint /health
+1. Objectif de cette étape
+
+Avant de développer des fonctionnalités métier, on met en place :
+
+une configuration globale propre
+
+un endpoint technique pour vérifier que l’API fonctionne
+
+👉 Cette étape sert de fondation pour tous les projets backend sérieux.
+
+2. Validation globale (sécurité et robustesse)
+Problème à résoudre
+
+Les clients (frontend, API externes) peuvent envoyer des données incorrectes
+
+Sans contrôle, l’API devient fragile et dangereuse
+
+Solution
+
+Utiliser une validation globale qui s’applique à toutes les routes.
+
+ValidationPipe (NestJS)
+
+Un pipe est un filtre exécuté avant les controllers.
+
+👉 ValidationPipe :
+
+valide les données entrantes
+
+bloque les données invalides
+
+transforme les types si nécessaire
+
+Configuration utilisée
+app.useGlobalPipes(
+  new ValidationPipe({
+    whitelist: true,
+    forbidNonWhitelisted: true,
+    transform: true,
+  }),
+);
+
+Rôle de chaque option
+
+whitelist: true
+→ supprime les champs non autorisés
+
+forbidNonWhitelisted: true
+→ rejette la requête si des champs inconnus sont présents
+
+transform: true
+→ convertit automatiquement les types (string → number, etc.)
+
+👉 Résultat : API stricte, prévisible, sécurisée
+
+Librairies nécessaires
+
+class-validator → règles de validation
+
+class-transformer → transformation des types
+
+Même si elles ne sont pas encore utilisées directement, elles sont indispensables pour la suite.
+
+3. Endpoint /health (standard professionnel)
+À quoi sert /health
+
+C’est un endpoint technique, pas métier.
+
+Il permet de répondre à la question :
+
+“Est-ce que ce service fonctionne ?”
+
+Utilisé par :
+
+Docker
+
+Kubernetes
+
+monitoring
+
+load balancers
+
+tests automatisés
+
+Caractéristiques d’un bon /health
+
+très simple
+
+très rapide
+
+pas de logique métier
+
+pas de dépendance complexe (DB au début)
+
+Exemple de réponse :
+
+{
+  "ok": true,
+  "service": "backend",
+  "timestamp": "..."
+}
+
+4. Organisation par module (NestJS)
+Principe
+
+Dans NestJS :
+
+tout est organisé par module
+
+même une petite fonctionnalité a son module
+
+Structure typique :
+
+health/
+├── health.controller.ts
+└── health.module.ts
+
+
+👉 Avantages :
+
+code clair
+
+facile à maintenir
+
+facile à étendre plus tard (ex : check DB)
+
+Rôle des éléments
+
+Controller
+→ reçoit les requêtes HTTP
+
+Module
+→ regroupe les éléments liés à une fonctionnalité
+
+AppModule
+→ module racine qui “déclare” les autres modules
+
+5. Chaîne complète d’une requête
+
+Quand une requête arrive :
+
+L’application démarre via main.ts
+
+Les pipes globaux sont appliqués
+
+NestJS trouve le bon module
+
+Puis le controller
+
+Puis la méthode
+
+Une réponse est renvoyée
+
+👉 Tout est structuré, contrôlé et prévisible
+
+6. Bonnes pratiques à retenir (réutilisables partout)
+
+Toujours configurer la validation globalement
+
+Toujours avoir un endpoint /health
+
+Toujours séparer :
+
+configuration
+
+routes
+
+logique
+
+Toujours penser maintenabilité avant fonctionnalités
+
+7. Pourquoi cette étape est essentielle
+
+Cette étape :
+
+ne montre rien “de visible” pour l’utilisateur final
+
+mais évite énormément de bugs
+
+et fait la différence entre un projet amateur et professionnel
+
+👉 Fondations solides = développement plus simple ensuite
+
+8. Phrase clé à retenir
+
+Un bon backend commence par être strict, organisé et vérifiable avant d’être fonctionnel.
