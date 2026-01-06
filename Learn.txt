@@ -1,0 +1,2 @@
+Générer un projet NestJS dans un nouveau dossier:
+npx @nestjs/cli new . --package-manager npm
