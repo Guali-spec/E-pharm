@@ -63,7 +63,7 @@ PostgreSQL (Docker)
 
 ## 📁 Structure du projet
 
-
+```
 e-pharm/
 ├── frontend/ # Application frontend (React)
 ├── backend/ # API backend (NestJS)
@@ -78,7 +78,7 @@ e-pharm/
 ├── GUIDE.md # Guide détaillé du projet (pas à pas)
 └── README.md # Ce fichier
 
-
+```
 
 ---
 
