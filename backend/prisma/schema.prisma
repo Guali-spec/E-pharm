@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Pharmacy {
+  id        String   @id @default(uuid())
+  name      String
+  city      String
+  address   String?
+  phone     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  stocks    Stock[]
+}
+
+model Medicine {
+  id          String   @id @default(uuid())
+  name        String
+  form        String?  // ex: comprimé, sirop
+  dosage      String?  // ex: 500mg
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  stocks      Stock[]
+}
+
+model Stock {
+  id         String   @id @default(uuid())
+  pharmacyId String
+  medicineId String
+  quantity   Int      @default(0)
+  priceXof   Int      // prix en FCFA (entier)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  pharmacy   Pharmacy @relation(fields: [pharmacyId], references: [id])
+  medicine   Medicine @relation(fields: [medicineId], references: [id])
+
+  @@unique([pharmacyId, medicineId]) // un médicament = une ligne de stock par pharmacie
+}
