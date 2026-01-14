@@ -185,3 +185,5 @@ et fait la différence entre un projet amateur et professionnel
 8. Phrase clé à retenir
 
 Un bon backend commence par être strict, organisé et vérifiable avant d’être fonctionnel.
+
+ORM = Object Relational Mapper

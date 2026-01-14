@@ -3,3 +3,5 @@ npx @nestjs/cli new . --package-manager npm
 
 lancer le backend: npm run start:dev
 puis lancer http://localhost:3000/
+
+Visualiser la DB: npx prisma studio
