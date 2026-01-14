@@ -5,3 +5,68 @@ lancer le backend: npm run start:dev
 puis lancer http://localhost:3000/
 
 Visualiser la DB: npx prisma studio
+
+Avant de commencer à coder après chaque retour:
+Vérifier Git (être sur la bonne branche)
+
+Dans un terminal à la racine :
+
+git status
+git branch
+
+
+👉 Tu dois être sur main (puisque tu as merge la PR).
+
+Puis récupérer le dernier état :
+
+git pull
+
+3) Lancer Docker Desktop (indispensable pour PostgreSQL)
+À faire
+
+Ouvre Docker Desktop
+
+Attends 🟢 Running
+
+Vérifier ensuite en terminal :
+docker ps
+
+
+Si tu ne vois pas epharm_db, lance la DB :
+
+docker compose -f docker/docker-compose.yml up -d
+
+4) Vérifier la DB côté Prisma (optionnel mais utile)
+
+Dans backend/ :
+
+cd backend
+npx prisma validate
+
+
+Si tu veux revoir les données :
+
+npx prisma studio
+
+5) Installer les dépendances (seulement si nécessaire)
+
+Normalement une seule fois, mais si tu as supprimé node_modules ou cloné ailleurs :
+
+Backend
+cd backend
+npm install
+
+Frontend (plus tard)
+cd frontend
+npm install
+
+6) Lancer le backend
+
+Toujours dans backend/ :
+
+npm run start:dev
+
+
+Tester :
+
+http://localhost:3000/health
